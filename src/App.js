@@ -8,21 +8,23 @@ class App extends Component {
     super();
 
     this.state = {
-      monsters : [
-        {
-          name:'Linda',
-          id : '123'
+      monsters : [],
+      tests:{tests:'1234'}
+    };
+  }
+
+  // This life cycle run when the first time coponent reder on the page
+  componentDidMount() {
+    fetch('http://jsonplaceholder.typicode.com/users')
+      .then((response) => response.json())
+      .then((users) => this.setState(
+        ()=>{
+          return {monsters: users}
         },
-        {
-          name:'Frank',
-          id : '456'
-        },
-        {
-          name:'Jacky',
-          id : '789'
+        () => {
+          console.log(this.state)
         }
-      ]
-    }
+      ))
   }
 
   render() {
@@ -30,7 +32,11 @@ class App extends Component {
       <div className="App">
        {
         this.state.monsters.map((monster) => {
-          return <h1 key={monster.id}>{ monster.name }</h1>
+          return (
+            <div key={monster.id}>
+              <h1>{ monster.name }</h1>
+            </div>
+          );
         })
        }
       </div>
