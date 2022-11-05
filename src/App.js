@@ -9,7 +9,8 @@ class App extends Component {
 
     console.log('constructor')
     this.state = {
-      monsters : []
+      monsters : [],
+      searchField: ''
     };
   }
 
@@ -30,26 +31,30 @@ class App extends Component {
       ))
   }
 
-  render() {
+  onSearchChange = (event) => {
+    const  searchField = event.target.value.toLowerCase();
+    this.setState(()=> {
+      return { searchField }
+    });
+  }
 
+  render() {
     console.log('render')
+    
+    const { monsters, searchField } = this.state;
+    const { onSearchChange } = this
+
+    const filterredMonsters = monsters.filter((monster) => {
+      return monster.name.toLowerCase().includes(searchField)
+    });
+
+    
 
     return (
       <div className="App">
-        <input className='search-box' type='search' placeholder='search monsters' onChange={(event)=>{
-          console.log(event.target.value);
-          const searchString = event.target.value.toLowerCase();
-          const filterredMonster = this.state.monsters.filter((monster) => {
-            return monster.name.toLowerCase().includes(searchString)
-          });
-          // if you want to modify array --> create a new array
-          this.setState(()=> {
-            return {monsters:filterredMonster}
-          })
-            
-        }}/>
+        <input className='search-box' type='search' placeholder='search monsters' onChange={ onSearchChange }/>
        {
-        this.state.monsters.map((monster) => {
+        filterredMonsters.map((monster) => {
           return (
             <div key={monster.id}>
               <h1>{ monster.name }</h1>
