@@ -38,6 +38,15 @@ class App extends Component {
       <div className="App">
         <input className='search-box' type='search' placeholder='search monsters' onChange={(event)=>{
           console.log(event.target.value);
+          const searchString = event.target.value.toLowerCase();
+          const filterredMonster = this.state.monsters.filter((monster) => {
+            return monster.name.toLowerCase().includes(searchString)
+          });
+          // if you want to modify array --> create a new array
+          this.setState(()=> {
+            return {monsters:filterredMonster}
+          })
+            
         }}/>
        {
         this.state.monsters.map((monster) => {
